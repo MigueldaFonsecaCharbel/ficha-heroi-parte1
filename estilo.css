@@ -1,302 +1,1009 @@
+/* ==========================================================================
+   1. VARIÁVEIS DE TEMA E RESET GERAL (:root)
+   ========================================================================== */
+:root {
+    --bg-primary: #0A0E17;
+    --bg-secondary: #0D141D;
+    --bg-card: #111827;
+    --bg-terminal: #05080D;
+    --bg-nav: rgba(10, 14, 23, 0.94);
+
+    --color-cyan: #00F0FF;
+    --color-cyan-soft: rgba(0, 240, 255, 0.14);
+    --color-cyan-glow: rgba(0, 240, 255, 0.35);
+    --color-yellow: #FFB700;
+    --color-red: #FF4D4D;
+    --color-green: #22C55E;
+    --color-purple: #A855F7;
+
+    --text-primary: #F3F4F6;
+    --text-secondary: #CBD5E1;
+    --text-muted: #94A3B8;
+
+    --border-subtle: #1F2937;
+    --border-strong: #334155;
+
+    --font-mono: 'JetBrains Mono', 'Courier New', Courier, monospace;
+    --font-display: 'Orbitron', 'JetBrains Mono', sans-serif;
+
+    --space-xs: 8px;
+    --space-sm: 16px;
+    --space-md: 24px;
+    --space-lg: 36px;
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --transition-base: 0.25s ease;
+}
+
+/* Tema Alternativo (Modo Claro Tático / Dossiê Impresso) */
+body.light-mode {
+    --bg-primary: #EEF2F6;
+    --bg-secondary: #FFFFFF;
+    --bg-card: #F8FAFC;
+    --bg-terminal: #0F172A;
+    --bg-nav: rgba(255, 255, 255, 0.96);
+
+    --color-cyan: #0284C7;
+    --color-cyan-soft: rgba(2, 132, 199, 0.12);
+    --color-cyan-glow: rgba(2, 132, 199, 0.25);
+    --color-yellow: #B45309;
+    --color-red: #DC2626;
+    --color-green: #15803D;
+    --color-purple: #7E22CE;
+
+    --text-primary: #0F172A;
+    --text-secondary: #1E293B;
+    --text-muted: #475569;
+
+    --border-subtle: #CBD5E1;
+    --border-strong: #94A3B8;
+}
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Courier New', Courier, monospace;
+}
+
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 84px;
 }
 
 body {
-    background-color: #0A0E17;
-    color: #FFFFFF;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: var(--font-mono);
+    line-height: 1.65;
+    padding: 92px 20px 48px 20px;
     display: flex;
-    justify-content: center;
-    padding: 40px 20px;
+    flex-direction: column;
+    align-items: center;
+    transition: background-color var(--transition-base), color var(--transition-base);
 }
 
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* ==========================================================================
+   2. MENU DE NAVEGAÇÃO (FLEXBOX + HAMBÚRGUER RESPONSIVO)
+   ========================================================================== */
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: var(--bg-nav);
+    border-bottom: 1px solid var(--color-cyan);
+    backdrop-filter: blur(8px);
+    z-index: 1000;
+}
+
+.nav-container {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 12px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--space-sm);
+}
+
+.nav-brand {
+    color: var(--color-cyan);
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: 1.5px;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 44px;
+}
+
+.nav-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.btn-theme,
+.nav-toggle {
+    background-color: transparent;
+    border: 1px solid var(--color-cyan);
+    color: var(--color-cyan);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 700;
+    padding: 10px 14px;
+    min-height: 44px;
+    min-width: 44px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: background-color var(--transition-base), color var(--transition-base), transform var(--transition-base);
+}
+
+.btn-theme {
+    border-color: var(--color-yellow);
+    color: var(--color-yellow);
+}
+
+.btn-theme:hover,
+.btn-theme:focus-visible {
+    background-color: var(--color-yellow);
+    color: #0A0E17;
+}
+
+.nav-toggle {
+    display: none;
+    font-size: 18px;
+}
+
+.nav-toggle:hover,
+.nav-toggle:focus-visible {
+    background-color: var(--color-cyan);
+    color: #0A0E17;
+}
+
+.nav-menu {
+    display: flex;
+    list-style: none;
+    align-items: center;
+    gap: 8px;
+}
+
+.nav-menu a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    padding: 10px 12px;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    border-radius: var(--radius-sm);
+    transition: color var(--transition-base), background-color var(--transition-base);
+}
+
+.nav-menu a:hover,
+.nav-menu a:focus-visible {
+    color: var(--color-cyan);
+    background-color: var(--color-cyan-soft);
+}
+
+/* ==========================================================================
+   3. CONTAINER PRINCIPAL E CABEÇALHO (AVATAR MATRIX + PERSONAGEM DIREITA)
+   ========================================================================== */
 .dossier-container {
-    max-width: 1100px;
+    max-width: 1120px;
     width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 40px;
-    position: relative;
+    gap: var(--space-lg);
 }
 
 .profile-header {
+    position: relative;
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-subtle);
+    border-left: 4px solid var(--color-cyan);
+    border-radius: var(--radius-md);
+    padding: 28px 270px 28px 28px;
+    min-height: 235px;
     display: flex;
-    gap: 24px;
     align-items: center;
-    min-height: 190px;
-    padding-right: 260px;
+    gap: var(--space-md);
+    overflow: hidden;
 }
 
+/* A) Avatar Matrix exclusivo */
 .avatar-box {
-    width: 120px;
-    height: 120px;
-    min-width: 120px;
-    min-height: 120px;
-    flex: 0 0 120px;
-    aspect-ratio: 1 / 1;
-    border: 2px solid #00F0FF;
-    background-color: #0A0E17;
-    overflow: hidden;
+    width: 132px;
+    height: 132px;
+    min-width: 132px;
+    min-height: 132px;
+    flex: 0 0 132px;
+    border: 2px solid var(--color-cyan);
+    border-radius: var(--radius-sm);
+    background-color: #05080D;
     position: relative;
-    box-shadow: 0 0 10px rgba(0, 240, 255, 0.2);
+    overflow: hidden;
+    box-shadow: 0 0 16px var(--color-cyan-glow);
 }
 
 #matrix-canvas {
     width: 100%;
     height: 100%;
     display: block;
-    position: relative;
-    z-index: 0;
 }
 
+.avatar-badge {
+    position: absolute;
+    bottom: 4px;
+    right: 6px;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: #00F0FF;
+    background: rgba(5, 8, 13, 0.85);
+    padding: 1px 4px;
+    border: 1px solid rgba(0, 240, 255, 0.4);
+}
+
+.profile-info {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    z-index: 2;
+}
+
+.dynamic-greeting {
+    color: var(--color-cyan);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.profile-info h1 {
+    font-family: var(--font-display);
+    font-size: clamp(22px, 3vw, 30px);
+    letter-spacing: 2px;
+    color: var(--text-primary);
+}
+
+.clearance {
+    color: var(--color-yellow);
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 1px;
+}
+
+.bio {
+    color: var(--text-secondary);
+    font-size: 14px;
+    max-width: 580px;
+}
+
+/* B) Personagem Ghost independente à direita */
 .floating-agent {
     position: absolute;
-    z-index: 2;
-    top: -28px;
-    right: -10px;
-    width: 245px;
-    height: 245px;
+    right: 14px;
+    bottom: 0;
+    width: 235px;
+    height: 230px;
+    z-index: 1;
     pointer-events: none;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
 }
 
 .floating-agent img {
     width: 100%;
     height: 100%;
-    display: block;
     object-fit: contain;
     object-position: center bottom;
-    filter: drop-shadow(0 0 7px rgba(0, 240, 255, 0.4));
+    filter: drop-shadow(0 0 10px rgba(0, 240, 255, 0.35));
 }
 
-.character-profile {
-    margin: 0;
-    min-height: 620px;
-    border: 1px solid #1F2937;
-    background-color: #05080D;
-    overflow: hidden;
-    position: relative;
+/* ==========================================================================
+   4. SEÇÕES GERAIS, TIPOGRAFIA E BOTÕES
+   ========================================================================== */
+.dossier-section {
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    padding: 28px;
 }
 
-.visual-background {
-    width: 100%;
-    height: 100%;
-    inset: 0;
-    opacity: 0.3;
-    position: absolute;
+.section-header {
+    margin-bottom: 18px;
+}
+
+.section-kicker {
     display: block;
-    object-fit: cover;
-    object-position: center 44%;
-    filter: saturate(0.8) contrast(1.25);
+    color: var(--color-yellow);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    margin-bottom: 6px;
 }
 
-.visual-grid {
-    position: absolute;
-    inset: 0;
-    background-image: linear-gradient(rgba(0, 240, 255, 0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 240, 255, 0.08) 1px, transparent 1px);
-    background-size: 42px 42px;
-    mask-image: linear-gradient(to bottom, transparent, black 18%, black 82%, transparent);
-    pointer-events: none;
-}
-
-.agency-mark,
-.telemetry-panel,
-.satellite-map {
-    position: absolute;
-    z-index: 2;
-    color: #AFC3C9;
-    font-size: 10px;
-    letter-spacing: 1.5px;
-    line-height: 1.7;
-}
-
-.agency-mark {
-    top: 30px;
-    left: 34px;
-    display: grid;
-    gap: 3px;
-}
-
-.agency-mark strong {
-    color: #E5F8FA;
-    font-size: 28px;
-    letter-spacing: 4px;
-}
-
-.agency-mark small,
-.telemetry-panel small {
-    color: #6C8A91;
-    font-size: 8px;
-}
-
-.classified-stamp {
-    position: absolute;
-    top: 30px;
-    right: 34px;
-    z-index: 2;
-    border: 2px solid #D82E3F;
-    color: #E13B4A;
+h2 {
+    font-family: var(--font-display);
+    color: var(--color-cyan);
     font-size: 19px;
-    font-weight: bold;
-    letter-spacing: 2px;
-    padding: 5px 10px;
-    transform: rotate(-7deg);
+    letter-spacing: 1.2px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
-.telemetry-panel {
-    bottom: 42px;
+.btn-action {
+    background-color: var(--bg-card);
+    border: 1px solid var(--color-cyan);
+    color: var(--color-cyan);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    padding: 12px 18px;
+    min-height: 44px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: background-color var(--transition-base), color var(--transition-base), transform var(--transition-base), box-shadow var(--transition-base);
+}
+
+.btn-action:hover,
+.btn-action:focus-visible {
+    background-color: var(--color-cyan);
+    color: #0A0E17;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 14px var(--color-cyan-glow);
+}
+
+.btn-action:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* ==========================================================================
+   5. SOBRE O HERÓI (HISTÓRIA EXPANSÍVEL)
+   ========================================================================== */
+.story-section p {
+    color: var(--text-secondary);
+    font-size: 14px;
+    margin-bottom: 14px;
+}
+
+.story-more-content {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px dashed var(--border-strong);
+    animation: fadeIn 0.3s ease;
+}
+
+.story-grid {
     display: grid;
-    gap: 3px;
-    border-top: 1px solid #00F0FF;
-    padding-top: 10px;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+    margin: 20px 0 18px 0;
 }
 
-.telemetry-left {
-    left: 34px;
+.story-block {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-left: 3px solid var(--color-cyan);
+    padding: 18px;
+    border-radius: var(--radius-sm);
 }
 
-.telemetry-right {
-    right: 34px;
-}
-
-.telemetry-panel span,
-.satellite-map span {
-    color: #00F0FF;
-}
-
-.telemetry-panel strong {
-    color: #E5F8FA;
-    font-size: 11px;
-}
-
-.satellite-map {
-    left: 34px;
-    bottom: 150px;
-    width: 150px;
-    height: 92px;
-    border: 1px solid rgba(0, 240, 255, 0.55);
-    padding: 8px;
-    background: repeating-linear-gradient(135deg, rgba(0, 240, 255, 0.08) 0 2px, transparent 2px 8px);
-}
-
-.satellite-map i,
-.satellite-map i::before,
-.satellite-map i::after {
-    position: absolute;
-    display: block;
-    content: "";
-    border: 1px solid rgba(0, 240, 255, 0.65);
-    border-radius: 50%;
-}
-
-.satellite-map i {
-    width: 28px;
-    height: 28px;
-    left: 59px;
-    top: 42px;
-}
-
-.satellite-map i::before {
-    width: 52px;
-    height: 52px;
-    left: -14px;
-    top: -14px;
-}
-
-.satellite-map i::after {
-    width: 80px;
-    height: 80px;
-    left: -28px;
-    top: -28px;
-}
-
-.character-cutout {
-    position: absolute;
-    z-index: 1;
-    inset: 0 25% 0 25%;
-    overflow: hidden;
-    border-left: 1px solid rgba(0, 240, 255, 0.65);
-    border-right: 1px solid rgba(0, 240, 255, 0.65);
-    box-shadow: 0 0 50px rgba(0, 240, 255, 0.16);
-}
-
-.character-cutout img {
-    width: 215%;
-    max-width: none;
-    height: 100%;
-    display: block;
-    object-fit: cover;
-    object-position: center 44%;
-    transform: translateX(-26.7%);
-    filter: saturate(1.1) contrast(1.15);
-}
-
-.character-profile figcaption {
-    position: absolute;
-    z-index: 3;
-    bottom: 0;
-    width: 100%;
-    border-top: 1px solid #00F0FF;
-    background: rgba(5, 8, 13, 0.84);
-    color: #00F0FF;
-    font-size: 11px;
+.story-block h3 {
+    color: var(--text-primary);
+    font-size: 14px;
     letter-spacing: 1px;
-    padding: 10px 14px;
-}
-.profile-info h1 {
-    font-size: 28px;
-    letter-spacing: 2px;
+    margin-bottom: 10px;
 }
 
-.clearance {
-    color: #FFB700;
-    font-weight: bold;
-    font-size: 14px;
-    margin: 6px 0 12px 0;
-}
-
-.bio {
-    color: #9CA3AF;
-    font-size: 14px;
-    max-width: 600px;
-}
-
-.history-section {
-    border-top: 1px solid #1F2937;
-    border-bottom: 1px solid #1F2937;
-    padding: 28px 0;
-}
-
-.history-intro {
-    max-width: 780px;
-    color: #9CA3AF;
+.capability-list {
+    color: var(--text-secondary);
     font-size: 13px;
-    line-height: 1.7;
-    margin-bottom: 22px;
+    padding-left: 18px;
+    display: grid;
+    gap: 8px;
 }
 
-.theater-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
+.capability-list strong {
+    color: var(--color-cyan);
+}
+
+/* ==========================================================================
+   6. ATRIBUTOS, HABILIDADES E BARRA DE XP
+   ========================================================================== */
+.xp-panel {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-left: 4px solid var(--color-yellow);
+    border-radius: var(--radius-sm);
+    padding: 18px;
+    margin-bottom: 24px;
+}
+
+.xp-top-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 10px;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.level-badge {
+    color: var(--color-yellow);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.xp-counter {
+    color: var(--color-cyan);
+}
+
+.xp-bar-track {
+    height: 14px;
+    margin-bottom: 14px;
+}
+
+.xp-fill {
+    background: linear-gradient(90deg, var(--color-cyan), var(--color-yellow));
+    transition: width 0.4s ease;
+}
+
+progress.xp-bar-track::-webkit-progress-value {
+    background: linear-gradient(90deg, var(--color-cyan), var(--color-yellow));
+}
+
+progress.xp-bar-track::-moz-progress-bar {
+    background: linear-gradient(90deg, var(--color-cyan), var(--color-yellow));
+}
+
+.xp-actions {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
     gap: 14px;
 }
 
-.theater-card {
-    min-height: 250px;
-    border: 1px solid #1F2937;
-    border-top: 2px solid #00F0FF;
-    background: #0D141D;
-    padding: 18px;
+.xp-feedback {
+    font-size: 13px;
+    color: var(--text-muted);
+    font-weight: 600;
+}
+
+.xp-feedback.level-up {
+    color: var(--color-yellow);
+    font-weight: 700;
+}
+
+.attributes-list {
+    display: grid;
+    gap: 16px;
+}
+
+.attribute-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 6px;
+}
+
+.attribute-label i {
+    color: var(--color-cyan);
+    margin-right: 6px;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 12px;
+    background-color: var(--border-subtle);
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+progress.progress-bar {
+    appearance: none;
+    display: block;
+}
+
+progress.progress-bar::-webkit-progress-bar {
+    background-color: var(--border-subtle);
+    border-radius: 999px;
+}
+
+progress.progress-bar::-webkit-progress-value {
+    background: var(--color-cyan);
+    border-radius: 999px;
+    transition: width 0.6s ease;
+}
+
+progress.progress-bar::-moz-progress-bar {
+    background: var(--color-cyan);
+    border-radius: 999px;
+}
+
+.progress-fill {
+    height: 100%;
+    background-color: var(--color-cyan);
+    border-radius: 999px;
+    transition: width 0.6s ease;
+}
+
+.progress-96 { width: 96%; }
+.progress-92 { width: 92%; }
+.progress-94 { width: 94%; }
+.progress-88 { width: 88%; }
+
+/* ==========================================================================
+   7. INVENTÁRIO E CONQUISTAS (CSS GRID: 3 COLUNAS DESKTOP, 2 TABLET, 1 MOBILE)
+   ========================================================================== */
+.inventory-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.item-counter {
+    background-color: var(--color-cyan-soft);
+    border: 1px solid var(--color-cyan);
+    color: var(--color-cyan);
+    font-size: 12px;
+    font-weight: 700;
+    padding: 6px 12px;
+    border-radius: var(--radius-sm);
+}
+
+.filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.filter-btn {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-strong);
+    color: var(--text-secondary);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 700;
+    padding: 10px 14px;
+    min-height: 44px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: all var(--transition-base);
+}
+
+.filter-btn:hover,
+.filter-btn:focus-visible {
+    border-color: var(--color-cyan);
+    color: var(--color-cyan);
+}
+
+.filter-btn.active {
+    background-color: var(--color-cyan);
+    border-color: var(--color-cyan);
+    color: #0A0E17;
+}
+
+.inventory-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+}
+
+.inventory-card {
+    position: relative;
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    transition: transform var(--transition-base), border-color var(--transition-base), box-shadow var(--transition-base);
+}
+
+/* Pseudo-elemento decorativo (Requisito Parte 1 - Seção 2.11) */
+.inventory-card::before {
+    content: "SEC-ITEM";
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    font-size: 9px;
+    letter-spacing: 1px;
+    color: var(--text-muted);
+    opacity: 0.75;
+}
+
+.inventory-card:hover {
+    transform: translateY(-4px) scale(1.01);
+    border-color: var(--color-cyan);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+}
+
+.inventory-card-top {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.inventory-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: var(--radius-sm);
+    background-color: var(--color-cyan-soft);
+    color: var(--color-cyan);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+}
+
+.inventory-card h3 {
+    font-size: 15px;
+    color: var(--text-primary);
+    line-height: 1.3;
+}
+
+.inventory-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.tag {
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: var(--radius-sm);
+    text-transform: uppercase;
+}
+
+.tag-type {
+    border: 1px solid var(--border-strong);
+    color: var(--text-secondary);
+}
+
+.tag-lendario {
+    border: 1px solid var(--color-yellow);
+    color: var(--color-yellow);
+}
+
+.tag-raro {
+    border: 1px solid var(--color-purple);
+    color: var(--color-purple);
+}
+
+.tag-comum {
+    border: 1px solid var(--color-cyan);
+    color: var(--color-cyan);
+}
+
+.inventory-card p {
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+/* Sistema visual de gadgets táticos do inventário */
+.inventory-card-top {
+    flex-direction: column;
+    align-items: stretch;
+}
+
+.inventory-icon-frame {
+    width: 180px;
+    height: 155px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 15px;
+    position: relative;
+    overflow: hidden;
+    background: radial-gradient(ellipse, rgba(30, 105, 135, 0.20), transparent 72%);
+}
+
+.inventory-card h3 {
+    text-align: center;
+}
+
+.inventory-item-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+    filter: drop-shadow(0 8px 12px rgba(0, 0, 0, .65));
+    transition: transform .4s ease, filter .4s ease;
+}
+
+.inventory-card:hover .inventory-item-image {
+    transform: scale(1.12) translateY(-4px);
+    filter: drop-shadow(0 0 12px rgba(0, 240, 255, .35)) drop-shadow(0 8px 12px rgba(0, 0, 0, .65));
+}
+
+.inventory-card:focus-visible {
+    outline: 2px solid var(--color-cyan);
+    outline-offset: 3px;
+}
+
+.inventory-modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 2100;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: rgba(5, 8, 13, .86);
+    backdrop-filter: blur(6px);
+}
+
+.inventory-modal-overlay.is-open {
+    display: flex;
+}
+
+.inventory-modal {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(180px, 260px) 1fr;
+    gap: 24px;
+    width: min(680px, 100%);
+    padding: 24px;
+    background: var(--bg-card);
+    border: 2px solid var(--color-cyan);
+    border-radius: var(--radius-md);
+    box-shadow: 0 0 30px var(--color-cyan-glow);
+}
+
+.inventory-modal-close {
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    z-index: 1;
+    background: transparent;
+    border: 0;
+    color: var(--color-cyan);
+    font-size: 28px;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.inventory-modal-image {
+    width: 100%;
+    height: 220px;
+    object-fit: contain;
+    filter: drop-shadow(0 8px 12px rgba(0, 0, 0, .65));
+}
+
+.inventory-modal-content {
+    align-self: center;
+}
+
+.inventory-modal-content h2 {
+    margin: 12px 0 8px;
+    color: var(--text-primary);
+    font-family: var(--font-display);
+    font-size: 20px;
+}
+
+.inventory-modal-type {
+    color: var(--color-cyan);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.inventory-modal-content > p:last-child {
+    margin-top: 16px;
+    color: var(--text-secondary);
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+@media (max-width: 720px) {
+    .inventory-icon-frame {
+        width: 104px;
+        height: 104px;
+    }
+
+    .inventory-modal {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+
+    .inventory-modal-image {
+        height: 180px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .inventory-item-image {
+        transition: none;
+    }
+}
+
+/* ==========================================================================
+   8. HISTÓRICO OPERACIONAL
+   ========================================================================== */
+.history-intro {
+    color: var(--text-secondary);
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+.satellite-display {
+    position: relative;
+    width: 100%;
+    height: 460px;
+    border: 1px solid var(--color-cyan);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    background-color: #020509;
+}
+
+.satellite-display #history-map {
+    width: 100%;
+    height: 100%;
+}
+
+.mission-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(5, 8, 13, 0.85);
+    backdrop-filter: blur(6px);
+    z-index: 2000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.mission-modal {
+    background: var(--bg-card);
+    border: 2px solid var(--color-cyan);
+    box-shadow: 0 0 30px var(--color-cyan-glow);
+    max-width: 540px;
+    width: 100%;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+}
+
+.modal-header {
+    background: var(--bg-secondary);
+    border-bottom: 1px solid var(--color-cyan);
+    padding: 14px 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-header h3 {
+    color: #FFF;
+    font-size: 15px;
+    font-family: var(--font-display);
+}
+
+.modal-close {
+    background: transparent;
+    border: none;
+    color: var(--color-cyan);
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.modal-body {
+    padding: 20px;
     display: flex;
     flex-direction: column;
     gap: 14px;
 }
 
-.theater-middle-east { border-top-color: #FFB700; }
-.theater-europe { border-top-color: #00F0FF; }
-.theater-americas { border-top-color: #A855F7; }
+.status-badge {
+    font-size: 11px;
+    font-weight: bold;
+    padding: 4px 10px;
+    border-radius: 4px;
+}
+
+.modal-info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    background: var(--bg-primary);
+    border: 1px solid var(--border-subtle);
+    padding: 12px;
+    font-size: 12px;
+}
+
+.modal-info-grid span {
+    color: var(--text-muted);
+    display: block;
+    font-size: 10px;
+}
+
+.modal-info-grid strong {
+    color: var(--color-cyan);
+}
+
+.modal-info-grid > div:nth-child(2) strong {
+    color: var(--color-yellow);
+}
+
+.modal-description {
+    color: var(--text-secondary);
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+#history-modal-btn {
+    align-self: flex-end;
+    margin-top: 6px;
+}
+
+.theater-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+}
+
+.theater-card {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-top: 3px solid var(--color-cyan);
+    border-radius: var(--radius-md);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    transition: transform var(--transition-base);
+}
+
+.theater-card:hover {
+    transform: translateY(-3px);
+}
+
+.theater-middle-east { border-top-color: var(--color-yellow); }
+.theater-europe { border-top-color: var(--color-cyan); }
+.theater-americas { border-top-color: var(--color-purple); }
 
 .theater-heading {
     display: flex;
@@ -305,31 +1012,27 @@ body {
 }
 
 .theater-heading > i {
-    color: #00F0FF;
+    color: var(--color-cyan);
     font-size: 20px;
-    margin-top: 2px;
+    margin-top: 3px;
 }
 
-.theater-middle-east .theater-heading > i { color: #FFB700; }
-.theater-americas .theater-heading > i { color: #A855F7; }
+.theater-middle-east .theater-heading > i { color: var(--color-yellow); }
+.theater-americas .theater-heading > i { color: var(--color-purple); }
 
 .theater-heading h3 {
-    color: #FFFFFF;
-    font-size: 14px;
-    letter-spacing: 1px;
-    margin-bottom: 4px;
+    font-size: 15px;
+    color: var(--text-primary);
 }
 
 .theater-heading span {
-    color: #6C8A91;
-    font-size: 10px;
-    letter-spacing: 1px;
+    font-size: 11px;
+    color: var(--text-muted);
 }
 
 .theater-card p {
-    color: #9CA3AF;
-    font-size: 12px;
-    line-height: 1.6;
+    font-size: 13px;
+    color: var(--text-secondary);
 }
 
 .country-list {
@@ -339,216 +1042,195 @@ body {
 }
 
 .country-list span {
-    border: 1px solid #334155;
-    color: #C5CBD5;
+    border: 1px solid var(--border-strong);
+    color: var(--text-secondary);
     font-size: 11px;
-    padding: 4px 7px;
+    padding: 3px 8px;
+    border-radius: var(--radius-sm);
 }
 
 .mission-status {
-    color: #FFB700;
-    font-size: 10px;
-    letter-spacing: 1px;
     margin-top: auto;
-}
-
-.mission-status i {
-    margin-right: 5px;
-}
-
-.mission-status.active {
-    color: #00F0FF;
-}
-
-.history-footer {
-    display: flex;
-    justify-content: space-between;
-    gap: 16px;
-    color: #526B73;
-    font-size: 10px;
-    letter-spacing: 1px;
-    margin-top: 20px;
-}
-
-.story-section {
-    border-top: 1px solid #1F2937;
-    border-bottom: 1px solid #1F2937;
-    padding: 28px 0;
-}
-
-.section-kicker {
-    color: #FFB700;
     font-size: 11px;
-    font-weight: bold;
-    letter-spacing: 1px;
-    margin-bottom: 10px;
+    color: var(--color-yellow);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
 }
 
-.story-section > p,
-.story-block p {
-    color: #C5CBD5;
-    font-size: 14px;
-    line-height: 1.7;
-    margin-bottom: 14px;
-}
+.mission-status.active { color: var(--color-cyan); }
+.mission-status.alert { color: var(--color-red); }
 
-.story-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 28px;
-    margin-top: 26px;
-}
-
-.story-block {
-    border-left: 2px solid #00F0FF;
-    padding-left: 18px;
-}
-
-.story-block h3 {
-    color: #FFFFFF;
-    font-size: 15px;
-    letter-spacing: 1px;
-    margin-bottom: 12px;
-}
-
-.capability-list {
-    color: #9CA3AF;
-    display: grid;
-    gap: 10px;
+/* ==========================================================================
+   9. FORMULÁRIO DE CONTATO COM A GUILDA
+   ========================================================================== */
+.simulation-notice {
+    background-color: var(--color-cyan-soft);
+    border-left: 3px solid var(--color-cyan);
+    padding: 10px 14px;
     font-size: 13px;
-    line-height: 1.6;
-    padding-left: 18px;
+    color: var(--text-secondary);
+    margin-bottom: 18px;
+    border-radius: var(--radius-sm);
 }
 
-.capability-list strong {
-    color: #00F0FF;
-}
-
-h2 {
-    color: #00F0FF;
-    font-size: 20px;
-    margin-bottom: 16px;
-    letter-spacing: 1px;
-}
-
-.attribute-item {
-    margin-bottom: 16px;
-}
-
-.attribute-label {
-    display: flex;
-    justify-content: space-between;
-    font-size: 13px;
-    margin-bottom: 6px;
-    font-weight: bold;
-}
-
-.progress-bar {
-    width: 100%;
-    height: 12px;
-    background-color: #1F2937;
-    border-radius: 4px;
-    overflow: hidden;
-}
-
-.progress-fill {
-    height: 100%;
-    background-color: #E5E7EB;
-}
-
-.progress-96 { width: 96%; }
-.progress-92 { width: 92%; }
-.progress-94 { width: 94%; }
-.progress-88 { width: 88%; }
-
-.inventory-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 16px;
-}
-
-.inventory-card {
-    background-color: #111827;
-    border: 1px solid #1F2937;
-    padding: 16px;
-    border-radius: 6px;
+.guild-form {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    text-align: center;
-    gap: 10px;
-}
-
-.inventory-card h3 {
-    font-size: 14px;
-    color: #FFFFFF;
-}
-
-.inventory-icon {
-    color: #00F0FF;
-    font-size: 28px;
-    height: 32px;
-    display: flex;
-    align-items: center;
-}
-
-.tag {
-    font-size: 11px;
-    font-weight: bold;
-    padding: 3px 8px;
-    border-radius: 4px;
-}
-
-.tag-legendary {
-    border: 1px solid #FFB700;
-    color: #FFB700;
-}
-
-.tag-rare {
-    border: 1px solid #A855F7;
-    color: #A855F7;
-}
-
-.tag-common {
-    border: 1px solid #9CA3AF;
-    color: #9CA3AF;
-}
-
-.inventory-card p {
-    font-size: 12px;
-    color: #9CA3AF;
-}
-
-.terminal-container {
-    display: flex;
     gap: 16px;
 }
 
-.terminal-console {
-    flex: 1;
-    min-width: 0;
+.form-row {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.form-group label {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.form-input {
+    width: 100%;
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-strong);
+    color: var(--text-primary);
+    font-family: var(--font-mono);
+    font-size: 14px;
+    padding: 12px 14px;
+    min-height: 44px;
+    border-radius: var(--radius-sm);
+    transition: border-color var(--transition-base), box-shadow var(--transition-base);
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: var(--color-cyan);
+    box-shadow: 0 0 0 3px var(--color-cyan-soft);
+}
+
+.form-input.invalid {
+    border-color: var(--color-red);
+}
+
+.field-error {
+    color: var(--color-red);
+    font-size: 12px;
+    min-height: 16px;
+    font-weight: 600;
+}
+
+.btn-submit {
+    align-self: flex-start;
+}
+
+.form-feedback {
+    font-size: 13px;
+    font-weight: 700;
+    padding: 12px 14px;
+    border-radius: var(--radius-sm);
+    display: none;
+}
+
+.form-feedback.error {
+    display: block;
+    background-color: rgba(255, 77, 77, 0.14);
+    border: 1px solid var(--color-red);
+    color: var(--color-red);
+}
+
+.form-feedback.success {
+    display: block;
+    background-color: rgba(34, 197, 94, 0.14);
+    border: 1px solid var(--color-green);
+    color: var(--color-green);
+}
+
+/* ==========================================================================
+   10. TERMINAL INTERATIVO E RODAPÉ
+   ========================================================================== */
+.terminal-container {
+    background-color: var(--bg-terminal);
+    border: 1px solid var(--color-cyan);
+    border-radius: var(--radius-md);
+    padding: 18px;
+}
+
+.terminal-output {
+    color: #00F0FF;
+    font-size: 13px;
+    line-height: 1.6;
+    min-height: 84px;
+    max-height: 180px;
+    overflow-y: auto;
+    white-space: pre-wrap;
+    margin-bottom: 12px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(0, 240, 255, 0.25);
+}
+
+.terminal-input-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.terminal-prompt {
+    color: #00F0FF;
+    font-weight: 700;
+    font-size: 16px;
 }
 
 .terminal-input {
-    width: 100%;
-    background-color: #111827;
-    border: 1px solid #00F0FF;
-    padding: 12px 16px;
-    color: #9CA3AF;
+    flex: 1;
+    min-width: 0;
+    background-color: #0A0E17;
+    border: 1px solid rgba(0, 240, 255, 0.45);
+    color: #F3F4F6;
+    font-family: var(--font-mono);
     font-size: 13px;
-    outline: none;
+    padding: 10px 12px;
+    min-height: 44px;
+    border-radius: var(--radius-sm);
 }
 
-.terminal-response {
-    display: block;
-    min-height: 42px;
-    border-left: 2px solid #00F0FF;
-    background-color: #0B111A;
-    color: #00F0FF;
-    font-size: 14px;
-    line-height: 1.6;
-    margin-top: 8px;
-    padding: 10px 12px;
+.terminal-input:focus {
+    outline: none;
+    border-color: #00F0FF;
+}
+
+.dossier-footer {
+    max-width: 1120px;
+    width: 100%;
+    margin-top: var(--space-lg);
+    padding-top: 20px;
+    border-top: 1px solid var(--border-subtle);
+}
+
+.footer-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.footer-meta p {
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+.footer-sub {
+    font-size: 12px;
+    color: var(--text-muted);
 }
 
 .footer-links {
@@ -557,73 +1239,271 @@ h2 {
 }
 
 .btn-link {
-    background-color: #111827;
-    border: 1px solid #00F0FF;
-    color: #00F0FF;
+    background-color: var(--bg-card);
+    border: 1px solid var(--color-cyan);
+    color: var(--color-cyan);
     text-decoration: none;
-    padding: 12px 16px;
-    font-size: 13px;
-    font-weight: bold;
-    display: flex;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 10px 16px;
+    min-height: 44px;
+    border-radius: var(--radius-sm);
+    display: inline-flex;
     align-items: center;
+    gap: 8px;
+    transition: all var(--transition-base);
 }
 
-.btn-link {
-    transition: all 0.3s ease;
-    cursor: pointer;
-}
-
-.btn-link:hover {
-    background-color: #00F0FF;
+.btn-link:hover,
+.btn-link:focus-visible {
+    background-color: var(--color-cyan);
     color: #0A0E17;
-    box-shadow: 0 0 12px rgba(0, 240, 255, 0.6);
 }
 
-@media (max-width: 720px) {
-    body {
-        padding: 24px 16px;
-    }
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-4px); }
+    to { opacity: 1; transform: translateY(0); }
+}
 
-    .profile-header,
-    .terminal-container {
-        align-items: flex-start;
-        flex-direction: column;
+/* ==========================================================================
+   11. RESPONSIVIDADE (TABLET <= 960px | MOBILE <= 680px) E ACESSIBILIDADE
+   ========================================================================== */
+@media (max-width: 960px) {
+    .inventory-grid,
+    .theater-grid {
+        grid-template-columns: repeat(2, 1fr);
     }
 
     .profile-header {
-        min-height: 0;
-        padding-right: 0;
+        padding-right: 210px;
     }
 
     .floating-agent {
-        position: relative;
-        top: auto;
-        right: auto;
+        width: 195px;
+        height: 200px;
+    }
+}
+
+@media (max-width: 680px) {
+    body {
+        padding: 82px 14px 36px 14px;
+    }
+
+    .nav-toggle {
+        display: inline-flex;
+    }
+
+    .nav-menu {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background-color: var(--bg-secondary);
+        border-bottom: 1px solid var(--color-cyan);
+        flex-direction: column;
+        align-items: stretch;
+        padding: 12px 20px;
+        gap: 6px;
+    }
+
+    .nav-menu.active {
+        display: flex;
+    }
+
+    .nav-menu a {
+        width: 100%;
+    }
+
+    .profile-header {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 22px 20px 0 20px;
+    }
+
+    .floating-agent {
+        position: static;
+        width: 185px;
+        height: 195px;
         align-self: center;
-        width: 180px;
-        height: 180px;
-        margin-top: -24px;
-        margin-bottom: -10px;
+        margin-top: 8px;
     }
 
     .story-grid,
     .inventory-grid,
-    .theater-grid {
+    .theater-grid,
+    .form-row {
         grid-template-columns: 1fr;
     }
 
-    .history-footer {
-        align-items: flex-start;
-        flex-direction: column;
+    .terminal-input-row {
+        flex-wrap: wrap;
     }
 
-    .terminal-input,
-    .footer-links {
+    .btn-terminal-send,
+    .btn-submit {
         width: 100%;
     }
+}
 
-    .footer-links .btn-link {
-        flex: 1;
-        justify-content: center;
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* Tooltip personalizada do Mapa Satélite */
+.tactical-map-tooltip {
+    background: rgba(5, 8, 13, 0.92) !important;
+    border: 1px solid var(--color-cyan) !important;
+    color: #FFF !important;
+    font-family: var(--font-mono) !important;
+    font-size: 11px !important;
+    padding: 6px 10px !important;
+    border-radius: var(--radius-sm) !important;
+    box-shadow: 0 0 10px var(--color-cyan-glow) !important;
+}
+.leaflet-tooltip-top::before {
+    border-top-color: var(--color-cyan) !important;
+}
+
+
+/* =========================================
+   INVENTÁRIO TÁTICO — NOVO DESIGN
+========================================= */
+
+.inventory-grid {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.inventory-card {
+    position: relative;
+    min-width: 0;
+    min-height: 280px;
+    padding: 12px;
+    gap: 9px;
+    overflow: hidden;
+
+    background:
+        linear-gradient(145deg, #172333, #080e18 75%);
+
+    border: 1px solid #28516a;
+    border-radius: 4px;
+
+    box-shadow:
+        inset 0 0 20px rgba(0, 190, 255, .07),
+        0 0 10px rgba(0, 190, 255, .06);
+}
+
+/* Detalhes luminosos */
+.inventory-card::before {
+    content: "SEC-ITEM";
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    font-size: 8px;
+    color: #7895a9;
+    letter-spacing: 1px;
+}
+
+.inventory-card::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 10%;
+    width: 45%;
+    height: 2px;
+    background: var(--color-cyan);
+    box-shadow: 0 0 10px var(--color-cyan);
+}
+
+.inventory-card-top {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+}
+
+.inventory-icon-frame {
+    width: 100%;
+    height: 125px;
+    margin: 12px auto 5px;
+    background:
+        radial-gradient(
+            ellipse,
+            rgba(0, 180, 255, .20),
+            transparent 72%
+        );
+}
+
+.inventory-card h3 {
+    min-height: 38px;
+    text-align: left;
+    font-family: var(--font-display);
+    font-size: 11px;
+    line-height: 1.4;
+    color: #e8f5ff;
+}
+
+.inventory-card p {
+    font-size: 9px;
+    line-height: 1.45;
+    color: #a9bac9;
+}
+
+/* Raridades */
+.inventory-card.rarity-lendario {
+    border-color: #d99a22;
+    box-shadow: inset 0 0 18px rgba(255, 183, 0, .08);
+}
+
+.inventory-card.rarity-raro {
+    border-color: #8b52cf;
+    box-shadow: inset 0 0 18px rgba(168, 85, 247, .08);
+}
+
+.inventory-card.rarity-comum {
+    border-color: #80909c;
+}
+
+/* Etiquetas */
+.tag {
+    display: block;
+    width: 100%;
+    padding: 4px 6px;
+    font-size: 9px;
+    border-radius: 2px;
+}
+
+@media (max-width: 1100px) {
+    .inventory-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 850px) {
+    .inventory-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 600px) {
+    .inventory-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 380px) {
+    .inventory-grid {
+        grid-template-columns: 1fr;
     }
 }

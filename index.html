@@ -3,204 +3,347 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dossiê: Agent Ghost</title>
+    <title>Dossiê: Agent Ghost // Ficha de Operador</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Orbitron:wght@600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
     <link rel="stylesheet" href="estilo.css">
 </head>
 <body>
 
-    <main class="dossier-container">
-        <header class="profile-header">
-            <div class="avatar-box">
-                <canvas id="matrix-canvas"></canvas>
+    <!-- NAVEGAÇÃO SUPERIOR FIXA -->
+    <nav class="navbar" aria-label="Navegação principal do dossiê">
+        <div class="nav-container">
+            <a href="#topo" class="nav-brand">
+                <i class="fa-solid fa-shield-halved" aria-hidden="true"></i>
+                <span>GHOST // SEC-01</span>
+            </a>
+
+            <div class="nav-controls">
+                <button type="button" id="theme-toggle" class="btn-theme" aria-pressed="false">
+                    <i class="fa-solid fa-sun" aria-hidden="true"></i>
+                    <span>MODO CLARO</span>
+                </button>
+
+                <button type="button" id="nav-toggle" class="nav-toggle" aria-label="Abrir menu de navegação" aria-expanded="false" aria-controls="main-nav">
+                    <i class="fa-solid fa-bars" aria-hidden="true"></i>
+                </button>
             </div>
+
+            <ul id="main-nav" class="nav-menu">
+                <li><a href="#sobre">SOBRE</a></li>
+                <li><a href="#atributos">ATRIBUTOS</a></li>
+                <li><a href="#inventario">INVENTÁRIO</a></li>
+                <li><a href="#historico">HISTÓRICO</a></li>
+                <li><a href="#contato">CONTATO</a></li>
+                <li><a href="#terminal">TERMINAL</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main id="topo" class="dossier-container">
+
+        <!-- CABEÇALHO E IDENTIFICAÇÃO DO AGENTE -->
+        <header class="profile-header">
+            <!-- A) AVATAR MATRIX EXCLUSIVO -->
+            <div class="avatar-box" role="img" aria-label="Fluxo criptográfico Matrix representando a assinatura digital do agente">
+                <canvas id="matrix-canvas"></canvas>
+                <span class="avatar-badge">MATRIX_ID</span>
+            </div>
+
             <div class="profile-info">
-                <h1>DOSSIÊ: GHOST</h1>
+                <p id="dynamic-greeting" class="dynamic-greeting" aria-live="polite">
+                    <i class="fa-solid fa-satellite-dish" aria-hidden="true"></i> CONEXÃO ESTABELECIDA, OPERADOR.
+                </p>
+                <h1>DOSSIÊ: AGENT GHOST</h1>
                 <p class="clearance">CLEARANCE LEVEL: TOP SECRET // OPERADOR CIBERNÉTICO</p>
-                <p class="bio">
-                    Operativo especializado em ciberdefesa, análise preditiva de ameaças e operações de infraestrutura crítica.
+                <p id="agent-bio" class="bio">
+                    Operativo especializado em ciberdefesa, inteligência de ameaças, OSINT e proteção de infraestrutura crítica.
                 </p>
             </div>
+
+            <!-- B) PERSONAGEM GHOST FLUTUANTE À DIREITA -->
+            <figure class="floating-agent">
+                <img src="mi6_agent_suit_avatar_02 (1).png" alt="Agente Ghost vestindo terno executivo azul-marinho em postura tática">
+                <figcaption class="sr-only">Identificação visual do Agente Ghost</figcaption>
+            </figure>
         </header>
 
-        <div class="floating-agent" aria-hidden="true">
-            <img src="mi6_agent_suit_avatar_02 (1).png" alt="">
+        <!-- SEÇÃO 1: SOBRE O HERÓI -->
+        <section id="sobre" class="dossier-section story-section" aria-labelledby="story-title">
+            <div class="section-header">
+                <span class="section-kicker">ARQUIVO CLASSIFICADO // ENIGMA-PALANTIR CORE</span>
+                <h2 id="story-title"><i class="fa-solid fa-user-secret" aria-hidden="true"></i> SOBRE O HERÓI: ORIGEM E DOUTRINA</h2>
+            </div>
+
+            <p>
+                Antes de se tornar uma lenda urbana no submundo da ciberespionagem, Ghost operava nas sombras das instalações mais restritas do Oriente Médio. Treinado em unidades de inteligência de sinais de elite, dominou a arte de mapear infraestruturas críticas e antecipar vetores de ataque estatais.
+            </p>
+
+            <div id="story-more" class="story-more-content hidden">
+                <p>
+                    Com eficácia operacional superior a 96% em operações cibernéticas e contra-inteligência, o agente apagou os próprios registros oficiais ao identificar redes paralelas de vigilância global. Hoje atua como um guardião autônomo na rede, operando sem rastro digital.
+                </p>
+
+                <div class="story-grid">
+                    <article class="story-block">
+                        <h3>ASCENSÃO E TECNOLOGIA TÁTICA</h3>
+                        <p>Equilíbrio entre inteligência preditiva de dados e incursões táticas de campo sob alta pressão.</p>
+                        <ul class="capability-list">
+                            <li><strong>OSINT Preditivo:</strong> Cruzamento de telemetria aberta e sigilosa para antecipar movimentações financeiras e rotas de fuga.</li>
+                            <li><strong>Sistemas Autônomos:</strong> Mapeamento espacial e varredura eletrônica de ambientes hostis em tempo real.</li>
+                            <li><strong>Contrainteligência:</strong> Neutralização de rastreamento e defesa ativa de infraestruturas estratégicas.</li>
+                        </ul>
+                    </article>
+
+                    <article class="story-block">
+                        <h3>DIRETRIZ OPERACIONAL ATUAL</h3>
+                        <p>Monitoramento contínuo de nós financeiros e energéticos críticos, atuando como força de dissuasão silenciosa contra ameaças persistentes avançadas (APTs).</p>
+                        <p>Status nos bancos de dados governamentais: <strong>INEXISTENTE / FANTASMA</strong>.</p>
+                    </article>
+                </div>
+            </div>
+
+            <button type="button" id="btn-toggle-story" class="btn-action" aria-expanded="false" aria-controls="story-more">
+                VER HISTÓRIA COMPLETA
+            </button>
+        </section>
+
+        <!-- SEÇÃO 2: ATRIBUTOS E HABILIDADES + XP -->
+        <section id="atributos" class="dossier-section attributes-section" aria-labelledby="attributes-title">
+            <div class="section-header">
+                <span class="section-kicker">TELEMETRIA DE DESEMPENHO // MÉTRICAS DE CAMPO</span>
+                <h2 id="attributes-title"><i class="fa-solid fa-chart-line" aria-hidden="true"></i> ATRIBUTOS &amp; HABILIDADES</h2>
+            </div>
+
+            <!-- SISTEMA DE EXPERIÊNCIA (XP) -->
+            <div class="xp-panel">
+                <div class="xp-top-row">
+                    <div class="level-badge">
+                        <i class="fa-solid fa-award" aria-hidden="true"></i>
+                        <span>NÍVEL OPERACIONAL: <strong id="agent-level">1</strong></span>
+                    </div>
+                    <span id="xp-counter" class="xp-counter">40 / 100 XP</span>
+                </div>
+
+                <progress class="progress-bar xp-bar-track" aria-label="Barra de experiência do agente" max="100" value="40" id="xp-progressbar">40%</progress>
+
+                <div class="xp-actions">
+                    <button type="button" id="btn-gain-xp" class="btn-action">
+                        <i class="fa-solid fa-bolt" aria-hidden="true"></i> COMPLETAR MISSÃO (+25 XP)
+                    </button>
+                    <p id="xp-feedback" class="xp-feedback" role="status" aria-live="polite">
+                        Aguardando registro de nova operação de campo.
+                    </p>
+                </div>
+            </div>
+
+            <!-- BARRAS DE ATRIBUTOS -->
+            <div class="attributes-list">
+                <div class="attribute-item">
+                    <div class="attribute-label">
+                        <span><i class="fa-solid fa-terminal" aria-hidden="true"></i> CYBERWARFARE &amp; EXPLOITS</span>
+                        <span>96%</span>
+                    </div>
+                    <div class="progress-bar"><div class="progress-fill progress-96"></div></div>
+                </div>
+
+                <div class="attribute-item">
+                    <div class="attribute-label">
+                        <span><i class="fa-solid fa-magnifying-glass-chart" aria-hidden="true"></i> ANÁLISE PREDITIVA &amp; OSINT</span>
+                        <span>92%</span>
+                    </div>
+                    <div class="progress-bar"><div class="progress-fill progress-92"></div></div>
+                </div>
+
+                <div class="attribute-item">
+                    <div class="attribute-label">
+                        <span><i class="fa-solid fa-microchip" aria-hidden="true"></i> SISTEMAS AUTÔNOMOS &amp; VARREDURA</span>
+                        <span>94%</span>
+                    </div>
+                    <div class="progress-bar"><div class="progress-fill progress-94"></div></div>
+                </div>
+
+                <div class="attribute-item">
+                    <div class="attribute-label">
+                        <span><i class="fa-solid fa-crosshairs" aria-hidden="true"></i> OPERAÇÕES TÁTICAS DE CAMPO</span>
+                        <span>88%</span>
+                    </div>
+                    <div class="progress-bar"><div class="progress-fill progress-88"></div></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SEÇÃO 3: INVENTÁRIO E CONQUISTAS (100% DINÂMICO VIA JS) -->
+        <section id="inventario" class="dossier-section inventory-section" aria-labelledby="inventory-title">
+            <div class="section-header inventory-header-row">
+                <div>
+                    <span class="section-kicker">ARSENAL &amp; EQUIPAMENTOS // CARGA TÁTICA</span>
+                    <h2 id="inventory-title"><i class="fa-solid fa-briefcase" aria-hidden="true"></i> INVENTÁRIO &amp; CONQUISTAS</h2>
+                </div>
+                <span id="item-counter" class="item-counter" aria-live="polite">0 ITENS CONQUISTADOS</span>
+            </div>
+
+            <div class="filter-bar" role="group" aria-label="Filtrar itens do inventário">
+                <button type="button" class="filter-btn active" data-filter="todos">TODOS</button>
+                <button type="button" class="filter-btn" data-filter="tecnologia">TECNOLOGIA</button>
+                <button type="button" class="filter-btn" data-filter="inteligencia">INTELIGÊNCIA</button>
+                <button type="button" class="filter-btn" data-filter="equipamentos">EQUIPAMENTOS</button>
+                <button type="button" class="filter-btn" data-filter="raro">RARO</button>
+                <button type="button" class="filter-btn" data-filter="lendario">LENDÁRIO</button>
+            </div>
+
+            <!-- GRID POPULADO DINAMICAMENTE PELO SCRIPT.JS -->
+            <div id="inventory-grid" class="inventory-grid"></div>
+        </section>
+
+        <div class="inventory-modal-overlay" id="inventory-modal-overlay" aria-hidden="true" inert>
+            <div class="inventory-modal" role="dialog" aria-modal="true" aria-labelledby="inventory-modal-title">
+                <button type="button" class="inventory-modal-close" id="inventory-modal-close" aria-label="Fechar detalhes do item">&#215;</button>
+                <img id="inventory-modal-image" class="inventory-modal-image" src="assets/inventario/crypto-key.png" alt="Imagem do equipamento selecionado">
+                <div class="inventory-modal-content">
+                    <span id="inventory-modal-rarity" class="tag tag-raro">RARO</span>
+                    <h2 id="inventory-modal-title">Crypto-Key Biometric M-9</h2>
+                    <p id="inventory-modal-type" class="inventory-modal-type">TECNOLOGIA</p>
+                    <p id="inventory-modal-description">Chave de hardware física com leitor de impressões digitais e circuito de auto-destruição para invalidação de logs.</p>
+                </div>
+            </div>
         </div>
 
-        <section class="story-section" aria-labelledby="story-title">
-            <div class="section-kicker">ARQUIVO CLASSIFICADO // ENIGMA-PALANTIR CORE</div>
-            <h2 id="story-title">ORIGEM E INICIAÇÃO: A UNIDADE 8200</h2>
-            <p>Antes de se tornar uma lenda urbana no submundo do espiocibernético, Ghost operava nas sombras das instalações mais restritas do Oriente Médio. Treinado pela lendária Unidade 8200, o braço de inteligência cibernética de elite, ele dominou a arte de explorar infraestruturas críticas e quebrar criptografias tidas como inquebráveis. Na Unidade 8200, ele não apenas aprendeu a invadir redes; aprendeu a antecipar o pensamento de nações adversárias.</p>
-            <p>Com eficácia medida em 96% em operações cibernéticas e exploits, o operador se tornou rápido demais para os protocolos burocráticos estatais. Quando percebeu que corporações privadas e governos paralelos controlavam o mundo real através da infraestrutura digital, Ghost apagou a própria identidade e passou a atuar como um fantasma na rede.</p>
+        <!-- SEÇÃO 4: HISTÓRICO OPERACIONAL  -->
+        <section id="historico" class="dossier-section history-section" aria-labelledby="history-title">
+            <div class="section-header">
+                <span class="section-kicker">ARQUIVO CONFIDENCIAL // TEATROS DE OPERAÇÃO</span>
+                <h2 id="history-title"><i class="fa-solid fa-earth-americas" aria-hidden="true"></i> HISTÓRICO OPERACIONAL — MAPA SATÉLITE</h2>
+            </div>
 
-            <div class="story-grid">
-                <article class="story-block">
-                    <h3>ASCENSÃO E TECNOLOGIA TÁTICA</h3>
-                    <p>Ghost é o equilíbrio entre inteligência de dados e ação de campo. Ele não se limita a operar atrás de telas; quando necessário, realiza incursões táticas em ambientes hostis, fundindo tecnologias civis e militares de grandes corporações e agências globalmente reconhecidas.</p>
-                    <ul class="capability-list">
-                        <li><strong>OSINT preditivo:</strong> o Terminal Palantir cruza dados públicos e sigilosos para prever movimentações financeiras, rotas de fuga e decisões de alvos.</li>
-                        <li><strong>Sistemas autônomos:</strong> o sonar portátil da Wayne Enterprises mapeia prédios, alvos e armas através de paredes em tempo real.</li>
-                        <li><strong>Ação de campo:</strong> com metodologia inspirada em Jack Ryan e Obi-Wan Nairobi(SAS operator), Ghost intercepta agentes, lê zonas de conflito e improvisa sob pressão.</li>
-                    </ul>
-                </article>
+            <p class="history-intro">
+                Rotas parcialmente desclassificadas. Clique nos pontos de controle geolocalizados no globo para abrir o briefing tático da missão.
+            </p>
 
-                <article class="story-block">
-                    <h3>MUNDO ATUAL E MISSÃO</h3>
-                    <p>Ghost opera como um guardião silencioso da infraestrutura mundial. Enquanto grandes potências guerreiam nas sombras digitais, ele intercepta pacotes de dados, neutraliza ameaças cibernéticas a instalações críticas e atua como uma força de dissuasão invisível.</p>
-                    <p>Seu painel de controle permanece ativo, transmitindo mensagens encriptadas para o comando e rastreando fluxos de dados globais através da interface tática. Ele não existe nos registros oficiais; ele é apenas o Ghost.</p>
-                </article>
+            <div class="satellite-display" id="history-map-container">
+                <div id="history-map"></div>
             </div>
         </section>
 
-        <section class="attributes-section">
-            <h2>TELEMETRIA DE ATRIBUTOS</h2>
-            <div class="attribute-item">
-                <div class="attribute-label">
-                    <span>CYBERWARFARE &amp; EXPLOITS (UNIT 8200)</span>
-                    <span>96%</span>
+        <!-- MODAL POPUP DE BRIEFING DE MISSÃO DO HISTÓRICO -->
+        <div class="mission-modal-overlay" id="history-modal-overlay">
+            <div class="mission-modal">
+                <div class="modal-header">
+                    <h3 id="history-modal-title">[FASE I] ORIENTE MÉDIO</h3>
+                    <button type="button" class="modal-close" id="history-modal-close">&#215;</button>
                 </div>
-                <div class="progress-bar"><div class="progress-fill progress-96"></div></div>
-            </div>
-
-            <div class="attribute-item">
-                <div class="attribute-label">
-                    <span>ANÁLISE PREDITIVA &amp; OSINT (PALANTIR)</span>
-                    <span>92%</span>
-                </div>
-                <div class="progress-bar"><div class="progress-fill progress-92"></div></div>
-            </div>
-
-            <div class="attribute-item">
-                <div class="attribute-label">
-                    <span>SISTEMAS AUTÔNOMOS &amp; SONAR (WAYNE ENTERPRISES)</span>
-                    <span>94%</span>
-                </div>
-                <div class="progress-bar"><div class="progress-fill progress-94"></div></div>
-            </div>
-
-            <div class="attribute-item">
-                <div class="attribute-label">
-                    <span>OPERAÇÕES TÁTICAS DE CAMPO (JACK RYAN/ Obi-Wan Nairobi(SAS))</span>
-                    <span>88%</span>
-                </div>
-                <div class="progress-bar"><div class="progress-fill progress-88"></div></div>
-            </div>
-        </section>
-
-        <section class="history-section" aria-labelledby="history-title">
-            <div class="section-kicker">ARQUIVO CONFIDENCIAL // ARQUIVO DE CAMPO</div>
-            <h2 id="history-title">HISTÓRICO  OPERACIONAL</h2>
-            <p class="history-intro">Rotas desclassificadas parcialmente. Cada operação deixou uma assinatura: dados recuperados, redes críticas estabilizadas e nenhum registro oficial do operador.</p>
-
-            <div class="theater-grid">
-                <article class="theater-card theater-middle-east">
-                    <div class="theater-heading">
-                        <i class="fa-solid fa-location-crosshairs" aria-hidden="true"></i>
+                <div class="modal-body">
+                    <div>
+                        <span class="status-badge" id="history-modal-status">ARQUIVO ENCERRADO</span>
+                    </div>
+                    <div class="modal-info-grid">
                         <div>
-                            <h3>ORIENTE MÉDIO</h3>
-                            <span>FASE I // 2014-2018</span>
+                            <span>LOCALIZAÇÃO (ONDE É)</span>
+                            <strong id="history-modal-location">Iraque, Líbano, Jordânia</strong>
+                        </div>
+                        <div>
+                            <span>PERÍODO / FASE</span>
+                            <strong id="history-modal-period">2014 – 2018</strong>
                         </div>
                     </div>
-                    <p>Primeiro ciclo de campo: inteligência de sinais, evacuação de ativos e neutralização de redes clandestinas.</p>
-                    <div class="country-list">
-                        <span>Iraque</span>
-                        <span>Líbano</span>
-                        <span>Irã</span>
-                        <span>Síria</span>
-                        <span>Jordânia</span>
+                    <div class="modal-description" id="history-modal-desc">
+                        Primeiro ciclo de campo: inteligência de sinais, evacuação de ativos e neutralização de redes clandestinas.
                     </div>
-                    <strong class="mission-status"><i class="fa-solid fa-circle-check" aria-hidden="true"></i> ARQUIVO ENCERRADO</strong>
-                </article>
+                    <button type="button" class="btn-action" id="history-modal-btn">COMPREENDIDO</button>
+                </div>
+            </div>
+        </div>
 
-                <article class="theater-card theater-europe">
-                    <div class="theater-heading">
-                        <i class="fa-solid fa-satellite" aria-hidden="true"></i>
-                        <div>
-                            <h3>FRONTEIRA EURASIÁTICA</h3>
-                            <span>FASE II // 2019-2022</span>
-                        </div>
-                    </div>
-                    <p>Operações de rastreio orbital e contrainteligência em corredores de alta tensão geopolítica.</p>
-                    <div class="country-list">
-                        <span>Ucrânia</span>
-                        <span>Rússia</span>
-                    </div>
-                    <strong class="mission-status active"><i class="fa-solid fa-signal" aria-hidden="true"></i> MONITORAMENTO ATIVO</strong>
-                </article>
-
-                <article class="theater-card theater-americas">
-                    <div class="theater-heading">
-                        <i class="fa-solid fa-globe-americas" aria-hidden="true"></i>
-                        <div>
-                            <h3>AMÉRICAS</h3>
-                            <span>FASE III // 2023-PRESENTE</span>
-                        </div>
-                    </div>
-                    <p>Infiltração de cadeias financeiras e proteção de infraestrutura crítica em território não convencional.</p>
-                    <div class="country-list">
-                        <span>Brasil</span>
-                        <span>Bolívia</span>
-                        <span>México</span>
-                    </div>
-                    <strong class="mission-status active"><i class="fa-solid fa-lock" aria-hidden="true"></i> ACESSO RESTRITO</strong>
-                </article>
+        <!-- SEÇÃO 5: CONTATO COM A GUILDA (FORMULÁRIO VALIDADO) -->
+        <section id="contato" class="dossier-section contact-section" aria-labelledby="contact-title">
+            <div class="section-header">
+                <span class="section-kicker">REDE DE APOIO // PROTOCOLO DE COMUNICAÇÃO</span>
+                <h2 id="contact-title"><i class="fa-solid fa-envelope-open-text" aria-hidden="true"></i> CONTATO COM A GUILDA</h2>
             </div>
 
-            <div class="history-footer">
-                <span>ÚLTIMA ATUALIZAÇÃO: 04.10.2026</span>
-                <span>COORDENADAS: REDACTED // NÍVEL ALFA</span>
-            </div>
+            <p class="simulation-notice">
+                <i class="fa-solid fa-circle-info" aria-hidden="true"></i>
+                Nota: Este formulário realiza uma <strong>simulação local</strong> de despacho operacional no navegador (sem envio a servidor externo).
+            </p>
+
+            <form id="guild-form" class="guild-form" novalidate>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="operator-name">NOME DO OPERADOR *</label>
+                        <input type="text" id="operator-name" name="operatorName" class="form-input" placeholder="Ex: Agente Vance" required>
+                        <span id="error-name" class="field-error" aria-live="polite"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="operator-email">E-MAIL DE CONTATO *</label>
+                        <input type="email" id="operator-email" name="operatorEmail" class="form-input" placeholder="operador@guilda.org" required>
+                        <span id="error-email" class="field-error" aria-live="polite"></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="operator-subject">ASSUNTO DA SOLICITAÇÃO *</label>
+                    <input type="text" id="operator-subject" name="operatorSubject" class="form-input" placeholder="Ex: Suporte de análise OSINT / Alerta de ameaça" required>
+                    <span id="error-subject" class="field-error" aria-live="polite"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="operator-message">MENSAGEM OPERACIONAL *</label>
+                    <textarea id="operator-message" name="operatorMessage" class="form-input form-textarea" rows="4" placeholder="Descreva os parâmetros da missão ou pedido de suporte..." required></textarea>
+                    <span id="error-message" class="field-error" aria-live="polite"></span>
+                </div>
+
+                <button type="submit" class="btn-action btn-submit">
+                    <i class="fa-solid fa-paper-plane" aria-hidden="true"></i> SIMULAR TRANSMISSÃO À GUILDA
+                </button>
+
+                <div id="form-feedback" class="form-feedback" role="status" aria-live="polite"></div>
+            </form>
         </section>
 
-        <section class="inventory-section">
-            <h2>INVENTÁRIO &amp; ARSENAL TÁTICO</h2>
-            <div class="inventory-grid">
-                <div class="inventory-card">
-                    <i class="fa-solid fa-user-shield inventory-icon" aria-hidden="true"></i>
-                    <h3>Terno Balístico Sob Medida</h3>
-                    <span class="tag tag-legendary">[LENDÁRIO]</span>
-                    <p>Blindagem Kevlar de alta densidade com corte executivo.</p>
-                </div>
-
-                <div class="inventory-card">
-                    <i class="fa-solid fa-laptop-code inventory-icon" aria-hidden="true"></i>
-                    <h3>Terminal Preditivo Palantir</h3>
-                    <span class="tag tag-rare">[RARO]</span>
-                    <p>Interface OSINT para cruzamento e análise de inteligência em tempo real.</p>
-                </div>
-
-                <div class="inventory-card">
-                    <i class="fa-solid fa-satellite-dish inventory-icon" aria-hidden="true"></i>
-                    <h3>Dispositivo de Mapeamento por Sonar</h3>
-                    <span class="tag tag-rare">[RARO]</span>
-                    <p>Sistema portátil de vigilância urbana via sonar (Wayne Enterprises), adaptado para inteligência cibernética tática.</p>
-                </div>
-
-                <div class="inventory-card">
-                    <i class="fa-solid fa-microchip inventory-icon" aria-hidden="true"></i>
-                    <h3>Hardware Key Anti-OSINT</h3>
-                    <span class="tag tag-common">[COMUM]</span>
-                    <p>Dispositivo físico de criptografia e eliminação de vestígios digitais.</p>
-                </div>
-
+        <!-- SEÇÃO 6: TERMINAL INTERATIVO INDEPENDENTE -->
+        <section id="terminal" class="dossier-section terminal-section" aria-labelledby="terminal-title">
+            <div class="section-header">
+                <span class="section-kicker">CONSOLE DE COMANDO // SHELL LOCAL</span>
+                <h2 id="terminal-title"><i class="fa-solid fa-terminal" aria-hidden="true"></i> TERMINAL INTERATIVO</h2>
             </div>
-        </section>
 
-        <footer class="communication-footer">
-            <h2>CANAL SEGURO DE COMUNICAÇÃO</h2>
             <div class="terminal-container">
-                <div class="terminal-console">
-                    <input type="text" placeholder="> TRANSMITIR MENSAGEM CRIPTOGRAFADA PARA O COMANDO..." class="terminal-input" aria-label="Mensagem criptografada para o comando">
-                    <div class="terminal-response" role="status" aria-live="polite">[COMANDO] Canal seguro aguardando transmissão...</div>
+                <div id="terminal-output" class="terminal-output" role="log" aria-live="polite">[SISTEMA] Terminal local pronto. Comandos disponíveis: QAP, QRA, QTH, QSL, STATUS, MISSAO, IDENTIDADE, HELP, CLEAR.</div>
+
+                <div class="terminal-input-row">
+                    <label for="terminal-input" class="terminal-prompt">&gt;</label>
+                    <input type="text" id="terminal-input" class="terminal-input" placeholder="Digite um comando (ex: QAP, STATUS, HELP) e pressione Enter..." autocomplete="off">
+                    <button type="button" id="terminal-send" class="btn-action btn-terminal-send">ENVIAR</button>
                 </div>
-                <div class="footer-links">
-        <a href="https://github.com/anduril" target="_blank" rel="noopener noreferrer" class="btn-link">[ GITHUB ]</a>
-        <a href="https://www.linkedin.com/company/palantir-technologies/" target="_blank" rel="noopener noreferrer" class="btn-link">[ LINKEDIN ]</a>
             </div>
-            </div>
-        </footer>
+        </section>
 
     </main>
-<script src="script.js?v=20261004-5"></script>
+
+    <!-- RODAPÉ -->
+    <footer class="dossier-footer">
+        <div class="footer-inner">
+            <div class="footer-meta">
+                <p><strong>DOSSIÊ: AGENT GHOST</strong> — Projeto Ficha de Herói (HTML5, CSS3 &amp; Vanilla JS)</p>
+                <p class="footer-sub">Interface de simulação tática • Identidade preservada</p>
+            </div>
+
+            <div class="footer-links">
+                <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="btn-link">
+                    <i class="fa-brands fa-github" aria-hidden="true"></i> GITHUB
+                </a>
+                <a href="https://www.linkedin.com" target="_blank" rel="noopener noreferrer" class="btn-link">
+                    <i class="fa-brands fa-linkedin" aria-hidden="true"></i> LINKEDIN
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
