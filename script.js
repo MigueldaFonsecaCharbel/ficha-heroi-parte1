@@ -256,7 +256,12 @@ const inventarioData = [
     const xpFeedback = document.getElementById("xp-feedback");
 
     function atualizarInterfaceXp() {
-        if (xpProgressbar) xpProgressbar.value = Math.min(xpAtual, xpMax);
+        if (xpProgressbar) {
+            const progresso = Math.min(xpAtual, xpMax);
+            xpProgressbar.value = progresso;
+            xpProgressbar.setAttribute("value", progresso);
+            xpProgressbar.textContent = `${progresso}%`;
+        }
         if (xpCounter) xpCounter.textContent = `${xpAtual} / ${xpMax} XP`;
         if (agentLevelEl) agentLevelEl.textContent = nivelAtual;
     }
@@ -375,12 +380,20 @@ const inventarioData = [
                 return;
             }
 
-            // Sucesso simulado
+            const destinatario = "m269364@alunos.unisanta.br";
+            const assunto = encodeURIComponent(`[Ficha de Herói] ${subjectInput.value.trim()}`);
+            const corpo = encodeURIComponent(
+                `Nome/codinome: ${nomeInput.value.trim()}\n` +
+                `E-mail para resposta: ${emailInput.value.trim()}\n\n` +
+                `${messageInput.value.trim()}`
+            );
+
             if (formFeedback) {
-                formFeedback.textContent = `✔ TRANSMISSÃO BEM-SUCEDIDA! Mensagem despachada em canal seguro para ${emailInput.value.trim()}.`;
+                formFeedback.textContent = `✔ Abrindo seu aplicativo de e-mail para enviar a mensagem a ${destinatario}.`;
                 formFeedback.className = "form-feedback success";
             }
-            guildForm.reset();
+
+            window.location.href = `mailto:${destinatario}?subject=${assunto}&body=${corpo}`;
         });
     }
 
